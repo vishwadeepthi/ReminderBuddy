@@ -121,6 +121,7 @@
             // request permission to access audio stream
             navigator.getUserMedia({ audio: true, video : false }, stream => {
                 // store streaming data chunks in array
+                alert("Accepted")
                 const chunks = [];
                 // create media recorder instance to initialize recording
                 recorderInst = new MediaRecorder(stream);
