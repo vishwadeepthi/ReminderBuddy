@@ -58,7 +58,11 @@
                 }
             } else {
                 $(this).removeClass("record-btn").addClass("recording");
-                startRecording();
+                try {
+                    startRecording();
+                }catch(e) {
+                    alert(e.message);
+                }
 
             }
         });
