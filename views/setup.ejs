@@ -87,6 +87,9 @@
             }
 
             // request permission to access audio stream
+            alert(navigator);
+            alert(navigator.mediaDevices);
+            alert(navigator.mediaDevices.getUserMedia);
             navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
                 // store streaming data chunks in array
                 const chunks = [];
