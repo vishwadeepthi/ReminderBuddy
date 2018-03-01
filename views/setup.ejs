@@ -28,7 +28,8 @@
 </style>
 
 <body>
-
+    <audio id="player"
+        controls></audio>
     <div class="ui container center">
 
         <div class="rbctn">
@@ -39,7 +40,8 @@
             </div>
 
             <i style="margin-top: 2rem; font-size: 2rem"> Hold to Record </i>
-            <div style = "margin-top: 2rem;" class = "player"></div>
+            <div style="margin-top: 2rem;"
+                class="player"></div>
 
         </div>
 
@@ -53,20 +55,50 @@
                 try {
                     $(this).removeClass("recording").addClass("record-btn");
                     recorderInst.stop();
-                }catch(e) {
+                } catch (e) {
                     alert(e.message);
                 }
             } else {
                 $(this).removeClass("record-btn").addClass("recording");
                 try {
                     startRecording();
-                }catch(e) {
+                    //newRecord();
+                } catch (e) {
                     alert(e.message);
                 }
 
             }
         });
 
+        // function newRecord() {
+        //     var player = document.getElementById('player');
+
+        //     var handleSuccess = function (stream) {
+        //         if (window.URL) {
+        //             player.src = window.URL.createObjectURL(stream);
+        //         } else {
+        //             player.src = stream;
+        //         }
+        //     };
+
+        //     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        //         .then(handleSuccess);
+
+
+        // }
+
+        // var player = document.getElementById('player');
+
+        // var handleSuccess = function (stream) {
+        //     if (window.URL) {
+        //         player.src = window.URL.createObjectURL(stream);
+        //     } else {
+        //         player.src = stream;
+        //     }
+        // };
+
+        // navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        //     .then(handleSuccess);
 
         function startRecording() {
             function createAudioElement(blobUrl) {
@@ -87,11 +119,12 @@
             }
 
             // request permission to access audio stream
-            navigator.getUserMedia({ audio: true }, stream => {
+            navigator.getUserMedia({ audio: true, video : false }, stream => {
                 // store streaming data chunks in array
                 const chunks = [];
                 // create media recorder instance to initialize recording
                 recorderInst = new MediaRecorder(stream);
+                debugger;
                 // function to be called when data is received
                 recorderInst.ondataavailable = e => {
                     // add stream data to chunks
