@@ -52,6 +52,7 @@
             if ($(this).hasClass("recording")) {
                 try {
                     $(this).removeClass("recording").addClass("record-btn");
+                    alert(recorder);
                     recorder.stop();
                 }catch(e) {
                     alert(e.message);
@@ -87,9 +88,6 @@
             }
 
             // request permission to access audio stream
-            alert(navigator);
-            alert(navigator.mediaDevices);
-            alert(navigator.mediaDevices.getUserMedia);
             navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
                 // store streaming data chunks in array
                 const chunks = [];
