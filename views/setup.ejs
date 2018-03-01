@@ -47,7 +47,7 @@
 
 
     <script>
-
+        var recorder;
         $(".record-action").click(function () {
             if ($(this).hasClass("recording")) {
                 try {
@@ -87,7 +87,7 @@
                 // store streaming data chunks in array
                 const chunks = [];
                 // create media recorder instance to initialize recording
-                window.recorder = new MediaRecorder(stream);
+                recorder = new MediaRecorder(stream);
                 // function to be called when data is received
                 recorder.ondataavailable = e => {
                     // add stream data to chunks
