@@ -52,7 +52,6 @@
             if ($(this).hasClass("recording")) {
                 try {
                     $(this).removeClass("recording").addClass("record-btn");
-                    alert(recorderInst);
                     recorderInst.stop();
                 }catch(e) {
                     alert(e.message);
@@ -88,15 +87,12 @@
             }
 
             // request permission to access audio stream
-            alert("Here we are ", navigator.mediaDevices.getUserMedia);
-            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            navigator.getUserMedia({ audio: true }, stream => {
                 // store streaming data chunks in array
                 const chunks = [];
                 // create media recorder instance to initialize recording
-                alert('here', MediaRecorder);
                 recorderInst = new MediaRecorder(stream);
                 // function to be called when data is received
-                alert('here 1', recorderInst);
                 recorderInst.ondataavailable = e => {
                     // add stream data to chunks
                     chunks.push(e.data);
@@ -110,13 +106,12 @@
                 };
                 // start recording with 1 second time between receiving 'ondataavailable' events
                 recorderInst.start(500);
-                alert('recorder', recorder);
                 // setTimeout to stop recording after 4 seconds
                 // setTimeout(() => {
                 //     // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
                 //     recorder.stop();
                 // }, 5000);
-            }).catch(console.error);
+            }, err => console.log(err));
         }
     </script>
 
