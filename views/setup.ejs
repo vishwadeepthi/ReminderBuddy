@@ -8,20 +8,57 @@
     <meta http-equiv="X-UA-Compatible"
         content="ie=edge">
     <title>Reminder Buddy</title>
+    <% include ./partials/header.ejs %>
 </head>
+<style>
+    .recording {
+        color: red;
+    }
+
+    .record-btn {
+        color: green;
+    }
+
+    .rbctn {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
 
 <body>
 
-    Title Here :
-    <input type="text" />
-    <input type="button"
-        value="Record"
-        id="recorder" />
+    <div class="ui container center">
+
+        <div class="rbctn">
+            <div class="column record-column">
+                <i class="microphone icon large record-action record-btn"
+                    id="recorder"
+                    style="font-size : 15rem; cursor : pointer;"></i>
+            </div>
+
+            <i style="margin-top: 2rem; font-size: 2rem"> Hold to Record </i>
+            <div style = "margin-top: 2rem;" class = "player"></div>
+
+        </div>
+
+    </div>
+
+
     <script>
 
-        document.querySelector("#recorder").addEventListener("click", function() {
-            startRecording();
-        })
+        $(".record-action").click(function () {
+            if ($(this).hasClass("recording")) {
+                $(this).removeClass("recording").addClass("record-btn");
+                recorder.stop();
+            } else {
+                $(this).removeClass("record-btn").addClass("recording");
+                startRecording();
+
+            }
+        });
+
 
         function startRecording() {
             function createAudioElement(blobUrl) {
@@ -36,8 +73,9 @@
                 sourceEl.src = blobUrl;
                 sourceEl.type = 'audio/webm';
                 audioEl.appendChild(sourceEl);
-                document.body.appendChild(audioEl);
-                document.body.appendChild(downloadEl);
+                $(".player").html(audioEl)
+                //document.body.appendChild(audioEl);
+                //document.body.appendChild(downloadEl);
             }
 
             // request permission to access audio stream
@@ -45,7 +83,7 @@
                 // store streaming data chunks in array
                 const chunks = [];
                 // create media recorder instance to initialize recording
-                const recorder = new MediaRecorder(stream);
+                window.recorder = new MediaRecorder(stream);
                 // function to be called when data is received
                 recorder.ondataavailable = e => {
                     // add stream data to chunks
@@ -59,12 +97,12 @@
                     }
                 };
                 // start recording with 1 second time between receiving 'ondataavailable' events
-                recorder.start(1000);
+                recorder.start(500);
                 // setTimeout to stop recording after 4 seconds
-                setTimeout(() => {
-                    // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
-                    recorder.stop();
-                }, 5000);
+                // setTimeout(() => {
+                //     // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
+                //     recorder.stop();
+                // }, 5000);
             }).catch(console.error);
         }
     </script>
