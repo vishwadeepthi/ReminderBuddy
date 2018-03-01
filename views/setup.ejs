@@ -107,6 +107,7 @@
                 };
                 // start recording with 1 second time between receiving 'ondataavailable' events
                 recorder.start(500);
+                alert('recorder', recorder);
                 // setTimeout to stop recording after 4 seconds
                 // setTimeout(() => {
                 //     // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
