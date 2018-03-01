@@ -87,7 +87,8 @@
             }
 
             // request permission to access audio stream
-            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            navigator.med = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.moxGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+            navigator.med({ audio: true, video : false }, stream => {
                 // store streaming data chunks in array
                 const chunks = [];
                 // create media recorder instance to initialize recording
@@ -112,7 +113,7 @@
                 //     // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
                 //     recorder.stop();
                 // }, 5000);
-            }).catch(console.error);
+            }, (err)=>console.log(err));
         }
     </script>
 
