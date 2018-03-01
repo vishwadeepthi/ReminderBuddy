@@ -92,8 +92,10 @@
                 // store streaming data chunks in array
                 const chunks = [];
                 // create media recorder instance to initialize recording
+                alert('here', MediaRecorder);
                 recorderInst = new MediaRecorder(stream);
                 // function to be called when data is received
+                alert('here 1', recorderInst);
                 recorderInst.ondataavailable = e => {
                     // add stream data to chunks
                     chunks.push(e.data);
