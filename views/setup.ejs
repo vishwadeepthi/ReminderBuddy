@@ -50,8 +50,12 @@
 
         $(".record-action").click(function () {
             if ($(this).hasClass("recording")) {
-                $(this).removeClass("recording").addClass("record-btn");
-                recorder.stop();
+                try {
+                    $(this).removeClass("recording").addClass("record-btn");
+                    recorder.stop();
+                }catch(e) {
+                    alert(e.message);
+                }
             } else {
                 $(this).removeClass("record-btn").addClass("recording");
                 startRecording();
