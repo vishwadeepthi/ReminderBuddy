@@ -5,7 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var sequelize = require("./db/index");
 var index = require('./routes/index');
 var setup = require('./routes/setup');
 var login = require("./routes/login");
