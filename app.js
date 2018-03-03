@@ -18,7 +18,7 @@ var callXMLString = function(audio, message) {
   return `<?xml version="1.0" encoding="UTF-8"?>
   <Response>
     <Say voice="man">Hello Crazy turtle.</Say>
-    <Play>https://reminderbuddy.herokuapp.com/recordings/${audio}</Play>
+    <Play>https://reminderbuddy.herokuapp.com/recordings/one.wav</Play>
   </Response>`;
 
 };
