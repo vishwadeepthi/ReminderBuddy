@@ -132,13 +132,13 @@ function startRecording() {
 		const downloadEl = document.createElement("a");
 		downloadEl.style = "display: block";
 		downloadEl.innerHTML = "download";
-		downloadEl.download = "audio.webm";
+		downloadEl.download = "audio.wav";
 		downloadEl.href = blobUrl;
 		const audioEl = document.createElement("audio");
 		audioEl.controls = true;
 		const sourceEl = document.createElement("source");
 		sourceEl.src = blobUrl;
-		sourceEl.type = "audio/webm";
+		sourceEl.type = "audio/x-wav";
 		audioEl.appendChild(sourceEl);
 		$(".player").html(audioEl);
 		//document.body.appendChild(audioEl);
@@ -167,8 +167,13 @@ function startRecording() {
 				if (recorderInst.state == "inactive") {
 					console.log("heheheheh");
 					// convert stream data chunks to a 'webm' audio format as a blob
-					const blob = new Blob(chunks, { type: "audio/webm" });
-					finalBlobAudio = blob;
+					const blob = new Blob(chunks, { type: "audio/x-wav" });
+                    finalBlobAudio = blob;
+
+                    // var mp3encoder = new lamejs.Mp3Encoder(1, 44100, 128); //mono 44.1khz encode to 128kbps 
+                    // var samples = new Int16Array(44100); //one second of silence replace that with your own samples 
+                    // var mp3Tmp = mp3encoder.encodeBuffer(chunks);
+
 					// convert blob to URL so it can be assigned to a audio src attribute
 					createAudioElement(URL.createObjectURL(blob));
 				}
@@ -212,7 +217,7 @@ $(".test-btn").click(function() {
 $(".schedule-btn").click(function() {
     var fd = new FormData();
     const params = new URLSearchParams(location.search);
-    fd.append("audiofile",finalBlobAudio, 'something.webm');
+    fd.append("audiofile",finalBlobAudio);
     fd.append("callid",params.get("callid"));
 
 	$.ajax({
