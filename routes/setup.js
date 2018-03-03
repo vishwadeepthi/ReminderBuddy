@@ -5,7 +5,9 @@ var fs = require("fs");
 var path = require("path");
 let multer = require("multer");
 
-const client = require("twilio")(process.env.aS, process.env.aT);
+const aS = "";
+const aT = "";
+const client = require("twilio")(aS || process.env.aS, aT || process.env.aT);
 const deep = "+919912625029";
 const azhar = "+919985635515";
 
@@ -13,11 +15,11 @@ var storage = multer.diskStorage({
 	filename: function(req, file, callback) {
 		callback(
 			null,
-			file.fieldname + "_" + Math.floor(Math.random() * 100000) + ".webm"
+			file.fieldname + "_" + Math.floor(Math.random() * 100000) + ".wav"
 		);
 	},
 	destination: function(req, file, cb) {
-		cb(null, path.join(__dirname + "../../pubic/recordings/"));
+		cb(null, path.join(__dirname + "../../public/recordings/"));
 	}
 });
 
@@ -85,7 +87,7 @@ router.post("/configure", upload.single("audiofile"), function(req, res, next) {
 router.post("/testcall", function(req, res) {
 	client.calls.create(
 		{
-			url: "http://blooming-scrubland-22902.herokuapp.com/say.xml",
+			url: "https://reminderbuddy.herokuapp.com/say.xml?callid=1",
 			to: azhar,
 			from: "+15153053983"
 		},
