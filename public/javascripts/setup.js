@@ -20,7 +20,6 @@ function initializeMic() {
 }
 
 function mousePressed() {
-	
 	// use the '.enabled' boolean to make sure user enabled the mic (otherwise we'd record silence)
 	if (state === 0 && mic.enabled) {
 		// Tell recorder to record to a p5.SoundFile which we will use for playback
@@ -125,27 +124,18 @@ function saveFile(soundFile, name) {
 	}).done(function(data) {
 		console.log(data);
 	});
-	///public/recordings/audiofile_27310.wav
-	//debugger;
-	//p5.prototype.writeFile([view], name, "wav");
+
 }
-//Initialize();
 $(".test-btn").click(function() {
-	//mousePressed();
-	// //For making test call.
-	// const params = new URLSearchParams(location.search);
-	// alert(params.get("callid"));
-	// $.ajax({
-	// 	type: "POST",
-	// 	url: "/setup/configure",
-	// 	data: fd,
-	// 	cache: false,
-	// 	processData: false,
-	// 	contentType: false
-	// }).done(function(data) {
-	// 	console.log(data);
-	// });
-	//
+	//For making test call.
+	const params = new URLSearchParams(location.search);
+
+	$.ajax({
+		type: "POST",
+		url: "/setup/testcall"
+	}).done(function(data) {
+		console.log(data);
+	});
 });
 
 $(".record-action").click(function() {
@@ -154,12 +144,11 @@ $(".record-action").click(function() {
 			$(this)
 				.removeClass("recording")
 				.addClass("record-btn");
-				
-				mousePressed();
-				setTimeout(function() {
-					mousePressed();
-				},500);
 
+			mousePressed();
+			setTimeout(function() {
+				mousePressed();
+			}, 500);
 		} catch (e) {
 			alert(e.message);
 		}
@@ -168,10 +157,10 @@ $(".record-action").click(function() {
 			.removeClass("record-btn")
 			.addClass("recording");
 		try {
-			initializeMic()
+			initializeMic();
 			setTimeout(function() {
 				mousePressed();
-			},500);
+			}, 500);
 		} catch (e) {
 			alert(e.message);
 		}
