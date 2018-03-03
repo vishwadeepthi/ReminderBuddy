@@ -11,12 +11,44 @@ var setup = require('./routes/setup');
 var login = require("./routes/login");
 var app = express();
 
+var {Calls, Contacts} = require("./db/models");
+
+var callXMLString = function(audio, message) {
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+  <Response>
+    <Say voice="man">Hello Crazy turtle.</Say>
+    <Play>http://blooming-scrubland-22902.herokuapp.com/${audio}</Play>
+  </Response>`;
+
+};
+
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+
+app.use("/say.xml", function (req, res) {
+  var callid = req.query.callid;
+  
+  var data;
+  Calls.findOne({where: {
+    id : parseInt(callid)
+  }}).then(result => {
+    data = callXMLString(result.audio);
+    res.set('Content-Type', 'text/xml');
+	  res.send(data);	
+  });
+  
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

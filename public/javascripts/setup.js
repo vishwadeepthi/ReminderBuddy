@@ -195,27 +195,34 @@ var blobToBase64 = function(blob, cb) {
 	reader.readAsDataURL(blob);
 };
 
-$(".schedule-btn").click(function() {
-	blobToBase64(finalBlobAudio, function(base64) {
-		// encode
-		var update = { blob: base64 };
-		$.post("/setup/configure",update).done(function(data) {
-			console.log(data);
-        });
-        
-	
-	});
+$(".test-btn").click(function() {
+    //For making test call. 
+    const params = new URLSearchParams(location.search);
 
-	// var fd = new FormData();
-	// fd.append("fname", "test.wav");
-	// fd.append("data", finalBlobAudio);
-	// $.ajax({
-	// 	type: "POST",
-	// 	url: "/setup/configure",
-	// 	data: fd,
-	// 	processData: false,
-	// 	contentType: false
-	// }).done(function(data) {
-	// 	console.log(data);
-	// });
+    $.ajax({
+		type: "POST",
+		url: "/setup/testcall"
+	}).done(function(data) {
+		console.log(data);
+	});
+    
+});
+
+
+$(".schedule-btn").click(function() {
+    var fd = new FormData();
+    const params = new URLSearchParams(location.search);
+    fd.append("audiofile",finalBlobAudio, 'something.webm');
+    fd.append("callid",params.get("callid"));
+
+	$.ajax({
+		type: "POST",
+		url: "/setup/configure",
+        data: fd,
+        cache: false,
+		processData: false,
+		contentType: false
+	}).done(function(data) {
+		console.log(data);
+	});
 });

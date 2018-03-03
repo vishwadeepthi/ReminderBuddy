@@ -33,15 +33,27 @@
     <div class="ui container center">
 
         <div class="rbctn">
-            <div class="column record-column">
-                <i class="microphone icon large record-action record-btn"
-                    id="recorder"
-                    style="font-size : 15rem; cursor : pointer;"></i>
-            </div>
+            <% var audio = JSON.parse(call).audio%>
+            <% if(audio) { %>
+                <div style="margin-top: 2rem;"
+                        class="player">
+                        <audio controls=""><source src="/recordings/<%=audio%>" type="audio/webm"></audio>    
+                    </div>
+                
+            <% } else { %>
+                <div class="column record-column">
+                    <i class="microphone icon large record-action record-btn"
+                        id="recorder"
+                        style="font-size : 15rem; cursor : pointer;"></i>
+                </div>
+    
+                <i style="margin-top: 2rem; font-size: 2rem"> Hold to Record </i>
+                <div style="margin-top: 2rem;"
+                    class="player">
+                </div>
 
-            <i style="margin-top: 2rem; font-size: 2rem"> Hold to Record </i>
-            <div style="margin-top: 2rem;"
-                class="player"></div>
+            <% }%>
+            
             <div class="ui form">
                 <div class="fields">
                     <div class="field">
@@ -59,7 +71,10 @@
                 </div>
                 <div class="schedule-btn ui button"
                     tabindex="0">Schedule</div>
+                    <div class="test-btn ui button"
+                    tabindex="0">Test Now</div>    
             </div>
+            
         </div>
 
     </div>
