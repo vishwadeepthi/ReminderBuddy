@@ -1,4 +1,4 @@
-var mic, recorder, soundFile;
+var mic, recorder, soundFile, scheduledOn;
 
 var state = 0; // mousePress will increment from Record, to Stop, to Play
 //var P5 = new p5();
@@ -112,7 +112,7 @@ function saveFile(soundFile, name) {
 		new Blob([new Uint8Array(view.buffer)], { type: "audio/x-wav" }),
 		"something.webm"
 	);
-	fd.append("callid", params.get("callid"));
+	fd.append("callid", "");
 
 	$.ajax({
 		type: "POST",
@@ -122,28 +122,59 @@ function saveFile(soundFile, name) {
 		processData: false,
 		contentType: false
 	}).done(function(data) {
-		console.log(data);
+		window.location.href = "/setup?callid="+data.result.id
 	});
-
 }
-$(".testcall").click(function() {
+$(".rbctn").on("click", ".delete-contact", function(e) {
+	$(e.currentTarget)
+		.parent()
+		.parent()
+		.remove();
+
+
+		var contacts = getContacts();
+		upsertContacts(contacts);
+		
+		if(contacts.length === 0 ){
+			$('.contact-table, .schedule-area').hide();
+			$(".no-contacts").show();		
+			return;
+		}
+
+		$('.contact-table, .schedule-area').show()
+		$(".no-contacts").hide();	
+
+});
+$(".rbctn").on("click", ".testcall", function(e) {
 	//For making test call.
-	var $this = $(this).parent().parent();
-	var cName = $this.find(".cName").text().trim();
-	var tNumber = $this.find(".tNumber").text().trim();
-	
+	var $this = $(e.currentTarget)
+		.parent()
+		.parent();
+	var cName = $this
+		.find(".cName")
+		.text()
+		.trim();
+	var tNumber = $this
+		.find(".tNumber")
+		.text()
+		.trim();
+
 	const params = new URLSearchParams(location.search);
-	debugger;
+
 	$.ajax({
 		type: "POST",
 		url: "/setup/testcall",
-		data : {
+		data: {
 			cName,
 			tNumber,
-			callid : params.get("callid")
+			callid: params.get("callid")
 		}
 	}).done(function(data) {
 		console.log(data);
+		$.toast({ 
+			text : `Test Call Made to ${cName} (${tNumber})`, 
+			showHideTransition : 'slide'  // It can be plain, fade or slide
+		});
 	});
 });
 
@@ -177,13 +208,6 @@ $(".record-action").click(function() {
 });
 
 $(".schedule-btn").click(function() {
-	// blobToBase64(finalBlobAudio, function(base64) {
-	// 	// encode
-	// 	var update = { blob: base64 };
-	// 	$.post("/setup/configure", update).done(function(data) {
-	// 		console.log(data);
-	// 	});
-	// });
 
 	var fd = new FormData();
 	const params = new URLSearchParams(location.search);
@@ -203,31 +227,120 @@ $(".schedule-btn").click(function() {
 	});
 });
 
-
-$(".add-contact-btn") .click(function() {
+$(".add-contact-btn").click(function() {
 	var $v = $(".contact-input");
 	var $t = $(".phone-input");
-	var contactName =  $v.val();
+	var contactName = $v.val();
 	var telphone = $t.val();
 
-	if(!contactName.trim()  || !telphone.trim()) {
+	if (!contactName.trim() || !telphone.trim()) {
 		return;
 	}
 
 	var temp = `
-		<tr>
+		<tr class = "crow">
 			<td class = "cName">
 				 ${contactName}
 			</td>
 			<td class = "tNumber">${telphone}</td>
-			<i class ="trash icon alternate outline large" style = "margin-right:1rem;"></i>
-			<i class="phone volume icon large testcall"></i>
+			<td>
+				<i class ="trash icon alternate delete-contact outline large" style = "margin-right:1rem;"></i>
+				<i class="phone volume icon large testcall"></i>
+			</td>
 			</tr>
-	`
+	`;
 	//Emptying the fields
-	$v.val("");	
+	$v.val("");
 	$t.val("");
 
 	$(".contact-table tbody").prepend(temp);
+	var contacts = getContacts();
+
+	if(contacts.length === 0 ){
+		$('.contact-table, .schedule-area').hide();
+		$(".no-contacts").show();		
+		return;
+	}
+
+	$('.contact-table, .schedule-area').show()
+	$(".no-contacts").hide();	
+
+	upsertContacts(contacts);
 });
 
+function getContacts() {
+	var contacts = [];
+	var params = new URLSearchParams(location.search);
+	$(".crow").each(function(iter, item) {
+		var $this = $(this);
+		contacts.push({
+			name: $this
+				.find(".cName")
+				.text()
+				.trim(),
+			telephone: $this
+				.find(".tNumber")
+				.text()
+				.trim(),
+			call_id: parseInt(params.get("callid"))
+		});
+	});
+	return contacts;
+}
+function upsertContacts(contacts) {
+	const params = new URLSearchParams(location.search);
+
+	$.ajax({
+		url: "/setup/addcontacts",
+		type: "POST",
+		data: JSON.stringify({
+			contacts: contacts,
+			callid: params.get("callid")
+		}),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(data) {
+			$.toast({ 
+				text : "Contact List Updated !!", 
+				showHideTransition : 'slide'  // It can be plain, fade or slide
+			});
+		}
+	});
+}
+
+$('#example14').calendar({
+	inline: true,
+	minDate : new Date(),
+	initialDate : new Date("March 31, 2018 7:00 PM"),
+	onChange: function (date, text) {
+			console.log(+date);
+			scheduledOn = +date;
+			
+			console.log(text);
+			$(".schedule-msg").text((new Date(scheduledOn)).toLocaleString('en-GB', { hour12: true }))
+			const params = new URLSearchParams(location.search);
+			$.ajax({
+				url: "/setup/scheduleon",
+				type: "POST",
+				data: JSON.stringify({
+					on: scheduledOn,
+					id : params.get('callid')
+				}),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function(data) {
+					$.toast({ 
+						text : "Timing Saved !!", 
+						showHideTransition : 'slide'  // It can be plain, fade or slide
+					});
+				}
+			});
+	}
+});
+
+
+if(callDetails.on) {
+	$(".schedule-msg").html(new Date(callDetails.on).toLocaleString('en-GB', { hour12: true }));
+}else {
+	$(".schedule-msg").html("Not yet scheduled");
+}

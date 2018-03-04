@@ -9,7 +9,6 @@ const aS = "";
 const aT = "";
 const client = require("twilio")(aS || process.env.aS, aT || process.env.aT);
 
-
 var storage = multer.diskStorage({
 	filename: function(req, file, callback) {
 		callback(
@@ -44,17 +43,18 @@ router.get("/", async function(req, res, next) {
 			{ raw: true }
 		);
 
-		//console.log(calls.length);
-		console.log(contacts);
-		return res.render("setup", {
+        //console.log(calls.length);
+        console.log("Deepthi here")
+	
+        return res.render("setup", {
 			call: JSON.stringify(call),
 			contacts: JSON.stringify(contacts)
 		});
 		//Query the DB with the ID;
 	}
 	res.render("setup", {
-		call: {},
-		contacts: []
+		call: JSON.stringify({}),
+		contacts: JSON.stringify([])
 	});
 });
 
@@ -78,18 +78,18 @@ router.post("/configure", upload.single("audiofile"), function(req, res, next) {
 			title: "Morning Reminder #1",
 			audio: req.file.filename
 		}).then(result => {
-			res.json({ success: true, file: req.file, result });
+        	res.json({ success: true, file: req.file, result });
 		});
 	}
 });
 
 router.post("/testcall", function(req, res) {
-    var {cName, tNumber, callid} = req.body;
-    console.log(cName, tNumber, callid);
+	var { cName, tNumber, callid } = req.body;
+	console.log(cName, tNumber, callid);
 	client.calls.create(
 		{
-			url: "https://reminderbuddy.herokuapp.com/say.xml?callid="+callid,
-			to: "+91"+tNumber,
+			url: "https://reminderbuddy.herokuapp.com/say.xml?callid=" + callid,
+			to: "+91" + tNumber,
 			from: "+15153053983"
 		},
 		(err, call) => {
@@ -104,13 +104,50 @@ router.post("/testcall", function(req, res) {
 	res.json({ success: true });
 });
 
+router.post("/scheduleon", function(req, res) {
+    
+    var { on, id } = req.body;
+	Calls.update(
+		{
+			on: on
+		},
+		{
+			where: {
+				id: id
+			}
+		}
+	).then(result => {
+        res.json({
+            success: true
+        });
+    })
+    .catch(err => {
+        res.json({ success: false, err: err });
+    });
 
+});
 
 router.post("/addcontacts", function(req, res) {
+	console.log(req.body);
+	console.log(req.params);
 
-    var {callid, contacts} = req.body;
+	var { callid, contacts } = req.body;
 
-    //Contacts.destroy()
+	contacts = contacts || [];
 
- });
+	Contacts.destroy({
+		where: {
+			call_id: parseInt(callid)
+		}
+	})
+		.then(result => {
+			return Contacts.bulkCreate(contacts);
+		})
+		.then(result => {
+			res.json({ success: true });
+		})
+		.catch(err => {
+			res.json({ success: false, message: err });
+		});
+});
 module.exports = router;
