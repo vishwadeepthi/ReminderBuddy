@@ -8,8 +8,7 @@ let multer = require("multer");
 const aS = "";
 const aT = "";
 const client = require("twilio")(aS || process.env.aS, aT || process.env.aT);
-const deep = "+919912625029";
-const azhar = "+919985635515";
+
 
 var storage = multer.diskStorage({
 	filename: function(req, file, callback) {
@@ -85,10 +84,12 @@ router.post("/configure", upload.single("audiofile"), function(req, res, next) {
 });
 
 router.post("/testcall", function(req, res) {
+    var {cName, tNumber, callid} = req.body;
+    console.log(cName, tNumber, callid);
 	client.calls.create(
 		{
-			url: "https://reminderbuddy.herokuapp.com/say.xml?callid=1",
-			to: azhar,
+			url: "https://reminderbuddy.herokuapp.com/say.xml?callid="+callid,
+			to: "+91"+tNumber,
 			from: "+15153053983"
 		},
 		(err, call) => {
@@ -103,4 +104,13 @@ router.post("/testcall", function(req, res) {
 	res.json({ success: true });
 });
 
+
+
+router.post("/addcontacts", function(req, res) {
+
+    var {callid, contacts} = req.body;
+
+    //Contacts.destroy()
+
+ });
 module.exports = router;

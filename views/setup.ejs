@@ -36,9 +36,14 @@
             <% var audio = JSON.parse(call).audio%>
             <% if(audio) { %>
                 <div style="margin-top: 2rem;"
-                        class="player">
-                        <audio controls=""><source src="/recordings/<%=audio%>" type="audio/webm"></audio>    
-                    </div>
+                    class="player">
+                    <audio controls=""><source src="/recordings/<%=audio%>" type="audio/webm"></audio>  
+                    <!-- <div class = "ui right floated main menu small">
+                        <a class="music popup icon item delete-music" data-content="Record Again">
+                            <i class="delete icon"></i>
+                        </a>
+                    </div> -->
+                </div>
                 
             <% } else { %>
                 <div class="column record-column">
@@ -53,7 +58,7 @@
                 </div>
 
             <% }%>
-            
+
             <div class="ui form">
                 <div class="fields">
                     <div class="field">
@@ -69,11 +74,40 @@
                             placeholder="Number +91">
                     </div>
                 </div>
-                <div class="schedule-btn ui button"
+                <!-- <div class="schedule-btn ui button"
                     tabindex="0">Schedule</div>
-                    <div class="test-btn ui button"
-                    tabindex="0">Test Now</div>    
+                <div class="test-btn ui button"
+                    tabindex="0">Test Now</div> -->
+                <div class="add-contact-btn ui button"
+                    tabindex="0">Add Contact</div>    
             </div>
+            <% if(contacts.length === 0) {%>
+                <i style="margin-top: 2rem; font-size: 2rem"> Hold to Record </i>
+            <% } else { %>
+                <table class="ui celled table contact-table">
+                        <thead>
+                          <tr><th>Name</th>
+                          <th>Contact Number</th>
+                          <th>Action</th>
+                        </tr></thead>
+                        <tbody>
+                         <% var contactList = JSON.parse(contacts) %>
+                          <% for(let i = 0;  i < contactList.length; i++) {%>
+                            <tr>
+                                <td class = "cName">
+                                    <%= contactList[i].name%>
+                                </td>
+                                <td class = "tNumber"><%= contactList[i].telephone%></td>
+                                <td>
+                                    <i class ="trash icon alternate outline large" style = "margin-right:1rem;"></i>
+                                    <i class="phone volume icon large testcall"></i>
+                                </td>
+                                </tr>
+                        <% } %>
+                        </tbody>
+                      </table>
+            <% } %>
+
             
         </div>
 

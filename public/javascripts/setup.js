@@ -126,13 +126,22 @@ function saveFile(soundFile, name) {
 	});
 
 }
-$(".test-btn").click(function() {
+$(".testcall").click(function() {
 	//For making test call.
+	var $this = $(this).parent().parent();
+	var cName = $this.find(".cName").text().trim();
+	var tNumber = $this.find(".tNumber").text().trim();
+	
 	const params = new URLSearchParams(location.search);
-
+	debugger;
 	$.ajax({
 		type: "POST",
-		url: "/setup/testcall"
+		url: "/setup/testcall",
+		data : {
+			cName,
+			tNumber,
+			callid : params.get("callid")
+		}
 	}).done(function(data) {
 		console.log(data);
 	});
@@ -193,3 +202,32 @@ $(".schedule-btn").click(function() {
 		console.log(data);
 	});
 });
+
+
+$(".add-contact-btn") .click(function() {
+	var $v = $(".contact-input");
+	var $t = $(".phone-input");
+	var contactName =  $v.val();
+	var telphone = $t.val();
+
+	if(!contactName.trim()  || !telphone.trim()) {
+		return;
+	}
+
+	var temp = `
+		<tr>
+			<td class = "cName">
+				 ${contactName}
+			</td>
+			<td class = "tNumber">${telphone}</td>
+			<i class ="trash icon alternate outline large" style = "margin-right:1rem;"></i>
+			<i class="phone volume icon large testcall"></i>
+			</tr>
+	`
+	//Emptying the fields
+	$v.val("");	
+	$t.val("");
+
+	$(".contact-table tbody").prepend(temp);
+});
+
