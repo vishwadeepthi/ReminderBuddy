@@ -16,10 +16,24 @@ router.get('/', async function(req, res, next) {
     call.contacts = contactsList.filter(function(contact){
       return contact.call_id === call.id;
     });
-    console.log(call);
   });
  
   res.render('index', { title: 'Express', callsList: JSON.parse(JSON.stringify(callsList)) });
+});
+
+router.post('/delete_call', function(req, res){
+  var id = req.body.id;
+  Contacts.destroy({
+    where: {
+      "call_id": parseInt(id)
+    }
+  });
+  Calls.destroy({
+    where: {
+      "id": parseInt(id)
+    }
+  });
+  res.json("Deleted successfully");
 });
 
 module.exports = router;
