@@ -22,44 +22,37 @@
     <div class="ui relaxed list"
       style="margin-top: 5rem">
 
+    <script>
+      var data = <%- JSON.stringify(callsList) %>
+      function play(btnValue){
+        var audio = $.find("audio#" + btnValue);
+        audio.play();
+      }
+    </script>
+  
+    <% for(var i=0; i<callsList.length; i++) { %>
 
       <div class="item">
-        <i class="calendar alternate outline icon large" style = "color : green;"></i>
+        <img class="ui avatar image" src="/images/avatar/small/elliot.jpg">
         <div class="content">
-          <a class="header">To, 99862347832, 712634832647831, 176238721637821, 71238721638</a>
-          <div class="">Scheduled
-            <a>
-            </a> @ 3.00
+          <a class="header"> <%-callsList[i].title %></a>
+          <div class="contacts-ctn">
+            <span>Will Call to:</span>
+            <div class="contacts">
+              <% for(var j=0; j<callsList[i].contacts.length; j++) { %>
+                <span><%-callsList[i].contacts[j].name %></span>            
+              <% }; %>
+            </div>
           </div>
-
         </div>
-        <div class="right floated content">
-          <div class="ui button">Play</div>
+        <div class="right-ctn">
+          <button value=<%-callsList[i].id %> onclick="play(this.value)">Play</button>
+          <audio id=<%-callsList[i].id %> src=<%-callsList[i].audio %> > </audio>
         </div>
-
-      </div>
-      <div class="item">
-        <img class="ui avatar image"
-          src="/images/avatar/small/stevie.jpg">
-        <div class="content">
-          <a class="header">Stevie Feliciano</a>
-          <div class="description">Last seen watching
-            <a>
-              <b>Bob's Burgers</b>
-            </a> 10 hours ago.</div>
-        </div>
-      </div>
-      <div class="item">
-        <img class="ui avatar image"
-          src="/images/avatar/small/elliot.jpg">
-        <div class="content">
-          <a class="header">Elliot Fu</a>
-          <div class="description">Last seen watching
-            <a>
-              <b>The Godfather Part 2</b>
-            </a> yesterday.</div>
-        </div>
-      </div>
+      </div>    
+    
+    <% }; %>
+      
     </div>
   </div>
 
