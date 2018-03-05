@@ -34,7 +34,11 @@ function mousePressed() {
 		console.log("SAVED");
 		//soundFile.play();
 		//return; // play the result!
-		saveFile(soundFile, "mySound.wav"); // save file
+		try {
+			saveFile(soundFile, "mySound.wav"); // save file
+		}catch(e) {
+			alert(e.message);
+		}
 		state++;
 	}
 }
