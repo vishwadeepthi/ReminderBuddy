@@ -20,7 +20,7 @@ function initializeMic() {
 }
 
 function mousePressed() {
-	alert(state);
+
 	// use the '.enabled' boolean to make sure user enabled the mic (otherwise we'd record silence)
 	if (state === 0 && mic.enabled) {
 		// Tell recorder to record to a p5.SoundFile which we will use for playback
@@ -38,7 +38,7 @@ function mousePressed() {
 		try {
 			saveFile(soundFile, "mySound.wav"); // save file
 		}catch(e) {
-			alert(e.message);
+			alert("Error while saving" +e.message);
 		}
 		state++;
 	}
@@ -65,23 +65,23 @@ function interleave(leftChannel, rightChannel) {
 }
 
 function saveFile(soundFile, name) {
-	alert("first")
+
 	var leftChannel, rightChannel;
 	leftChannel = soundFile.buffer.getChannelData(0);
-	alert("second")
+
 	// handle mono files
 	if (soundFile.buffer.numberOfChannels > 1) {
 		rightChannel = soundFile.buffer.getChannelData(1);
 	} else {
 		rightChannel = leftChannel;
 	}
-	alert("three")
+
 	var interleaved = interleave(leftChannel, rightChannel);
 
 	// create the buffer and view to create the .WAV file
 	var buffer = new window.ArrayBuffer(44 + interleaved.length * 2);
 	var view = new window.DataView(buffer);
-	alert("four")
+
 	// write the WAV container,
 	// check spec at: https://ccrma.stanford.edu/courses/422/projects/WaveFormat/
 	// RIFF chunk descriptor
@@ -103,7 +103,7 @@ function saveFile(soundFile, name) {
 	view.setUint32(40, interleaved.length * 2, true);
 
 	// write the PCM samples
-	alert("five")
+
 	var lng = interleaved.length;
 	var index = 44;
 	var volume = 1;
@@ -113,7 +113,7 @@ function saveFile(soundFile, name) {
 	}
 	var fd = new FormData();
 	const params = new URLSearchParams(location.search);
-	alert("6")
+
 	fd.append(
 		"audiofile",
 		new Blob([new Uint8Array(view.buffer)], { type: "audio/x-wav" }),
@@ -121,7 +121,7 @@ function saveFile(soundFile, name) {
 	);
 	fd.append("callid", "");
 
-	alert("7")
+
 	$.ajax({
 		type: "POST",
 		url: "/setup/configure",
@@ -130,10 +130,10 @@ function saveFile(soundFile, name) {
 		processData: false,
 		contentType: false
 	}).done(function(data) {
-		alert("done")
+	
 		window.location.href = "/setup?callid="+data.result.id
 	}).fail(function(err) {
-		alert(JSON.stringify(err));
+	
 	});
 }
 $(".rbctn").on("click", ".delete-contact", function(e) {
@@ -201,7 +201,7 @@ $(".record-action").click(function() {
 				mousePressed();
 			}, 500);
 		} catch (e) {
-			alert(e.message);
+		
 		}
 	} else {
 		$(this)
@@ -213,7 +213,7 @@ $(".record-action").click(function() {
 				mousePressed();
 			}, 500);
 		} catch (e) {
-			alert(e.message);
+		
 		}
 	}
 });
