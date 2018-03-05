@@ -132,6 +132,8 @@ function saveFile(soundFile, name) {
 	}).done(function(data) {
 		alert("done")
 		window.location.href = "/setup?callid="+data.result.id
+	}).fail(function(err) {
+		alert(err);
 	});
 }
 $(".rbctn").on("click", ".delete-contact", function(e) {
