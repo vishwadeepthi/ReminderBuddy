@@ -33,43 +33,107 @@
     <div class="ui container center">
 
         <div class="rbctn">
-            <div class="column record-column">
-                <i class="microphone icon large record-action record-btn"
-                    id="recorder"
-                    style="font-size : 15rem; cursor : pointer;"></i>
-            </div>
-
-            <i style="margin-top: 2rem; font-size: 2rem"> Hold to Record </i>
-            <div style="margin-top: 2rem;"
-                class="player"></div>
-            <div class="ui form">
-                <div class="fields">
-                    <div class="field">
-                        <label>Contact</label>
-                        <input type="text"
-                            class = "contact-input"
-                            placeholder="Contact Name">
-                    </div>
-                    <div class="field">
-                        <label>Telephone Number</label>
-                        <input type="text"
-                            class = "phone-input"
-                            placeholder="Number +91">
-                    </div>
+            <% var audio = JSON.parse(call).audio%>
+            <% if(audio) { %>
+                <div style="margin-top: 2rem;"
+                    class="player">
+                    <audio controls=""><source src="/recordings/<%=audio%>" type="audio/webm"></audio>  
+                    <!-- <div class = "ui right floated main menu small">
+                        <a class="music popup icon item delete-music" data-content="Record Again">
+                            <i class="delete icon"></i>
+                        </a>
+                    </div> -->
                 </div>
-                <div class="schedule-btn ui button"
-                    tabindex="0">Schedule</div>
-            </div>
+                
+            <% } else { %>
+                <div class="column record-column">
+                    <i class="microphone icon large record-action record-btn"
+                        id="recorder"
+                        style="font-size : 15rem; cursor : pointer;"></i>
+                </div>
+    
+                <i style="margin-top: 2rem; font-size: 2rem"> Press The Mic To Record </i>
+
+                <div style="margin-top: 2rem;"
+                    class="player">
+                </div>
+
+            <% }%>
+            
+            <% if(audio) {%>
+                <div class="ui form">
+                        <div class="fields">
+                            <div class="field">
+                                <label>Contact</label>
+                                <input type="text"
+                                    class = "contact-input"
+                                    placeholder="Contact Name">
+                            </div>
+                            <div class="field">
+                                <label>Telephone Number</label>
+                                <input type="text"
+                                    class = "phone-input"
+                                    placeholder="Number +91">
+                            </div>
+                        </div>
+                        <div class="add-contact-btn ui button"
+                            tabindex="0">Add Contact</div>    
+                    </div>
+                    <% var isHidden = (JSON.parse(contacts).length === 0) ? "display:none;" : "" %>
+                   
+                    <div class="ui message no-contacts" style = "<%= isHidden ? '' : 'display:none;'%>">
+                        <div class="header">
+                            Opps !! No Contacts..
+                        </div>
+                        <p>Add Contacts and Schedule it. We will call them with your voice recorded .</p>
+                        <i>Also, you can test call them just by clicking the telephone icon next to the contact</i>
+                    </div>
+                    
+                    
+                    <table class="ui celled table contact-table" style = "<%= isHidden %>">
+                        <thead>
+                            <tr><th>Name</th>
+                            <th>Contact Number</th>
+                            <th>Action</th>
+                        </tr></thead>
+                        <tbody>
+                            <% var contactList = JSON.parse(contacts) %>
+                            <% for(let i = 0;  i < contactList.length; i++) {%>
+                            <tr class = "crow">
+                                <td class = "cName">
+                                    <%= contactList[i].name%>
+                                </td>
+                                <td class = "tNumber"><%= contactList[i].telephone%></td>
+                                <td>
+                                    <i class ="trash delete-contact icon alternate outline large" style = "margin-right:1rem;"></i>
+                                    <i class="phone volume icon large testcall"></i>
+                                </td>
+                                </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
+        
+                    
+                    <div style="width : 100%;<%= isHidden %>" class = "schedule-area">
+                            <h3>Schedule On : 
+                                <a class="ui green label schedule-msg"></a>
+                                </i></h3>
+                            <div class="ui calendar" id="example14">
+                            </div>
+                    </div>
+
+
+            <% }%>    
+
         </div>
-
     </div>
-
+    
 
     <script>
         var callDetails = <%- call %>
         var contacts = <%- contacts %>
     </script>
-    
+
     <script src="/javascripts/setup.js"></script>
 </body>
 
