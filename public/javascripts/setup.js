@@ -2,6 +2,9 @@ var mic, recorder, soundFile, scheduledOn;
 
 var state = 0; // mousePress will increment from Record, to Stop, to Play
 //var P5 = new p5();
+
+initializeMic();
+
 function initializeMic() {
 	// create an audio in
 	mic = new p5.AudioIn();
@@ -20,7 +23,6 @@ function initializeMic() {
 }
 
 function mousePressed() {
-
 	// use the '.enabled' boolean to make sure user enabled the mic (otherwise we'd record silence)
 	if (state === 0 && mic.enabled) {
 		// Tell recorder to record to a p5.SoundFile which we will use for playback
@@ -197,6 +199,7 @@ $(".record-action").click(function() {
 				.addClass("record-btn");
 
 			mousePressed();
+			$(".status-msg").html("Recording Complete. Saving...");
 			setTimeout(function() {
 				mousePressed();
 			}, 500);
@@ -208,7 +211,7 @@ $(".record-action").click(function() {
 			.removeClass("record-btn")
 			.addClass("recording");
 		try {
-			initializeMic();
+			$(".status-msg").html("Now Recording... Tap the Mic again to Stop");
 			setTimeout(function() {
 				mousePressed();
 			}, 500);

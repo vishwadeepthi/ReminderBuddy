@@ -7,7 +7,25 @@
   </title>
   <% include ./partials/header.ejs %>
 </head>
+<style>
+  .rowItem {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid #ddd;
+    align-items: center !important;
+    padding : 2rem !important;
+  }
+  .addBtn {
+    float: right !important;
+    position: absolute !important;
+    right: 20px !important;
+    top: 7px !important;
+  }
 
+</style>
 <body>
 
   <div class="ui top fixed menu">
@@ -16,7 +34,11 @@
         style="color : green;"></i>
     </div>
     <div>
-      <button value="ADD" onclick="document.location='/setup?callid='">ADD</button>
+        <button class="ui right labeled icon button right positive addBtn" onclick="document.location='/setup?callid='">
+            <i class="right arrow icon"></i>
+            ADD NEW 
+          </button>
+    
     </div>
   </div>
 
@@ -35,24 +57,40 @@
   
     <% for(var i=0; i<callsList.length; i++) { %>
 
-      <div class="item">
-        <img class="ui avatar image" src="/images/avatar/small/elliot.jpg">
+      <div class="item rowItem">
+        <!-- <img class="ui avatar image" src="/images/avatar/small/elliot.jpg"> -->
         <div class="content">
-          <a class="header" href="/setup?callid=<%-callsList[i].id %>"> <%-callsList[i].title %></a>
+          
+          <h3><a class="header" href="/setup?callid=<%-callsList[i].id %>"> <%-callsList[i].title %></a></h3>
+
+
           <div class="contacts-ctn">
-            <span>Will Call to:</span>
-            <div class="contacts">
+            <span>Contacts : </span>
+            <span class="contacts">
               <% for(var j=0; j<callsList[i].contacts.length; j++) { %>
-                <span><%-callsList[i].contacts[j].name %></span>            
+                  <a class="ui image label">
+                    <img src="https://image.ibb.co/cQoZq7/eric.jpg">
+                    <%-callsList[i].contacts[j].name %>
+                  </a>
               <% console.log(callsList[i].contacts[j].name)}; %>
-            </div>
+                </span>
           </div>
         </div>
-        <div class="right-ctn">
+
+        <div class = "ui right floated main menu" style = "height: 3rem;">
+          <a class="music popup icon item" data-content="Play Music">
+            <i class="play icon large"></i>
+          </a>
+          <a  id="<%- callsList[i].id %>" class="music popup icon item delete_call" data-content="Play Music">
+            <i class="trash icon large"></i>
+          </a>
+          
+        </div>
+        <!-- <div class="right-ctn">
           <button value=<%-callsList[i].id %> onclick="play(this.value)">Play</button>
           <audio id=<%-callsList[i].id %> src=<%-callsList[i].audio %> > </audio>
-          <i id=<%-callsList[i].id %> class="trash delete-contact icon alternate outline large delete_call" style="margin-right:1rem;"></i>
-        </div>
+          
+        </div> -->
       </div>    
     
     <% }; %>

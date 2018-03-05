@@ -25,6 +25,13 @@
         flex-direction: column;
         align-items: center;
     }
+    .no-recording-ctn {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 
 <body>
@@ -38,25 +45,23 @@
                 <div style="margin-top: 2rem;"
                     class="player">
                     <audio controls=""><source src="/recordings/<%=audio%>" type="audio/webm"></audio>  
-                    <!-- <div class = "ui right floated main menu small">
-                        <a class="music popup icon item delete-music" data-content="Record Again">
-                            <i class="delete icon"></i>
-                        </a>
-                    </div> -->
                 </div>
                 
             <% } else { %>
-                <div class="column record-column">
-                    <i class="microphone icon large record-action record-btn"
-                        id="recorder"
-                        style="font-size : 15rem; cursor : pointer;"></i>
-                </div>
-    
-                <i style="margin-top: 2rem; font-size: 2rem"> Press The Mic To Record </i>
+               <div class = "no-recording-ctn">
 
-                <div style="margin-top: 2rem;"
-                    class="player">
-                </div>
+                    <div class="column record-column">
+                            <i class="microphone icon large record-action record-btn"
+                                id="recorder"
+                                style="font-size : 15rem; cursor : pointer;"></i>
+                        </div>
+            
+                        <i style="margin-top: 2rem; font-size: 2rem" class = "status-msg"> Tap The Mic To Record </i>
+        
+                        <div style="margin-top: 2rem;"
+                            class="player">
+                        </div>
+               </div>
 
             <% }%>
             
