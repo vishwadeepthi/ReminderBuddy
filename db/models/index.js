@@ -10,6 +10,9 @@ const Calls = sequelize.define("calls", {
 	},
 	on: {
 		type: Sequelize.DATE
+	},
+	completed: {
+		type: Sequelize.BOOLEAN
 	}
 });
 
@@ -66,3 +69,6 @@ module.exports = {
 // }).then(result => {
 //     console.log(result);
 // });
+
+// Calls.sync({force : true});
+// Contacts.sync({force : true});
