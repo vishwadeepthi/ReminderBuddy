@@ -2,10 +2,15 @@ var schedule = require("node-schedule");
 var { Calls, Contacts } = require("./db/models");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
+const aS = "";
+const aT = "";
+const client = require("twilio")(aS || process.env.aS, aT || process.env.aT);
 
 // schedule.scheduleJob("*/1 * * * *", function() {
 
 // });
+
+console.log("********* SCHEUDLER STARTED ************");
 
 setInterval(() => {
 	var d1 = new Date(),
@@ -19,7 +24,6 @@ setInterval(() => {
 				[Op.or]: [false, null]
 			},
 			on: {
-				[Op.gt]: d2,
 				[Op.lt]: d1
 			}
 		}
@@ -47,8 +51,31 @@ setInterval(() => {
 			});
 		});
 	});
-}, 5000);
+}, 120000);
+//Runs every two mins
 
 function executeCall(callId, contacts) {
 	console.log(callId, contacts);
+	contacts.forEach(item => {
+		console.log("********* CALL MADE TO ************", callId, item, new Date());
+		makeCall(callId, item);
+	});
+}
+
+
+function makeCall(callid,tNumber) {
+	client.calls.create(
+		{
+			url: "https://reminderbuddy.herokuapp.com/say.xml?callid=" + callid,
+			to: "+91" + tNumber,
+			from: "+15153053983"
+		},
+		(err, call) => {
+			if (err) {
+				return console.log(err);
+			}
+
+			console.log(call.sid);
+		}
+	);
 }

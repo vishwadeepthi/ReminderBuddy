@@ -35,9 +35,16 @@
 </style>
 
 <body>
+        <div class="ui top fixed menu">
+                <div class="item">
+                    <a href = "/index">
+                        <i class="angle left icon large pink" style = "font-weight:bold;"></i>
+                    </a>
+                </div>
+              </div>
     <div id="webcam"></div>
  
-    <div class="ui container center">
+    <div class="ui container center" style = "margin-top:5rem;">
 
         <div class="rbctn">
             <% var audio = JSON.parse(call).audio%>
@@ -88,7 +95,7 @@
                    
                     <div class="ui message no-contacts" style = "<%= isHidden ? '' : 'display:none;'%>">
                         <div class="header">
-                            Opps !! No Contacts..
+                            Opps !! No Contacts.. 😢
                         </div>
                         <p>Add Contacts and Schedule it. We will call them with your voice recorded .</p>
                         <i>Also, you can test call them just by clicking the telephone icon next to the contact</i>

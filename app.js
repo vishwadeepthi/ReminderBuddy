@@ -19,6 +19,9 @@ var app = express();
 
 var {Calls, Contacts} = require("./db/models");
 
+/** Importing scheduler  */
+require("./schedule");
+
 var callXMLString = function(audio, message) {
 
   return `<?xml version="1.0" encoding="UTF-8"?>
