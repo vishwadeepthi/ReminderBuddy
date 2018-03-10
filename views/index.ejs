@@ -62,7 +62,7 @@
     <tbody>
 
         <% for(var i=0; i<callsList.length; i++) { %>
-            <tr>
+            <tr class = "call-row">
                   <td>
                       <h3><a class="header" href="/setup?callid=<%-callsList[i].id %>"> <%-callsList[i].title %></a></h3>
                   </td>
@@ -141,7 +141,7 @@
           index = i;
         });
         calls.splice(index, 1);
-        $(self).parent().parent().remove();
+        $(self).closest(".call-row").remove();
         showNoCallsMsg();
       }
     });
