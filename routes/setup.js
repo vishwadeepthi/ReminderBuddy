@@ -151,4 +151,24 @@ router.post("/addcontacts", function(req, res) {
 		});
 });
 
+
+router.post("/savetitle", function(req, res) {
+	if (req.body.callid) {
+		//This means we are updating audio clip for a given call id;
+		return Calls.update(
+			{
+				title: req.body.title
+			},
+			{
+				where: {
+					id: req.body.callid
+				}
+			}
+		).then(result => {
+			res.json({ success: true, file: req.file, result });
+		});
+	} else {
+		res.json({success: false, message : "callId not supplied"});
+	}
+});
 module.exports = router;

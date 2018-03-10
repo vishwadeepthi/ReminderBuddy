@@ -64,7 +64,7 @@
         <% for(var i=0; i<callsList.length; i++) { %>
             <tr class = "call-row">
                   <td>
-                      <h3><a class="header" href="/setup?callid=<%-callsList[i].id %>"> <%-callsList[i].title %></a></h3>
+                      <h3><a class="header" href="/setup?callid=<%-callsList[i].id %>"> <%-callsList[i].title || "Morning Reminder" %></a></h3>
                   </td>
                   <td>
                       <% for(var j=0; j<callsList[i].contacts.length; j++) { %>

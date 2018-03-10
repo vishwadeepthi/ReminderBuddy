@@ -358,3 +358,29 @@ if(callDetails.on) {
 }else {
 	$(".schedule-msg").html("Not yet scheduled");
 }
+
+
+$(".save-title").click(function() {
+	var value = $(".call-title").val().trim();
+	const params = new URLSearchParams(location.search);
+	
+	if(value) {
+		$.ajax({
+			url: "/setup/savetitle",
+			type: "POST",
+			data: JSON.stringify({
+				title: value,
+				callid: params.get("callid")
+			}),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function(data) {
+				$.toast({ 
+					text : `Title Updated !`, 
+					showHideTransition : 'slide'  // It can be plain, fade or slide
+				});		
+			}
+		});
+	}
+
+});
