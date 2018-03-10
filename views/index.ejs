@@ -74,10 +74,8 @@
                           </a>
                         <%  }; %>
                   </td>
-                  <td>
-                      <% if(callsList[i].on) {%>
-                        <%- (new Date(callsList[i].on)).toLocaleString('en-GB', { hour12: true }) %>
-                      <% } %>
+                  <td class = "scheduled-on-td">
+                      
                   </td>
                   <td>
                       <% if(callsList[i].completed) {%>
@@ -123,6 +121,13 @@
     var audio = $($.find("audio[data-id=" + btnValue + "]"));
     audio[0].play();
   }
+
+  
+  calls.forEach((element,iter) => {
+    if(element.on) {
+      $(".scheduled-on-td:eq("+iter+")").html((new Date(element.on)).toLocaleString('en-GB', { hour12: true }));
+    }
+  });
 
   $(".delete_call").click(function(evt){
     var id = $(this).attr("id"), self =this;
