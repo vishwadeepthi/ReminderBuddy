@@ -32,6 +32,9 @@
         justify-content: center;
         align-items: center;
     }
+    .ui.form .fields>.field {
+        padding-left: 0
+    }
 </style>
 
 <body>
@@ -57,12 +60,12 @@
               </div>
     <div id="webcam"></div>
  
-    <div class="ui container center" style = "margin-top:5rem;">
+    <div class="ui container center" >
 
         <div class="rbctn">
             <% var audio = JSON.parse(call).audio%>
             <% if(audio) { %>
-                <div style="margin-top: 2rem;"
+                <div style="margin-top: 2rem; margin-top:5rem;"
                     class="player">
                     <audio controls=""><source src="/recordings/<%=audio%>" type="audio/webm"></audio>  
                 </div>
@@ -76,7 +79,7 @@
                                 style="font-size : 15rem; cursor : pointer;"></i>
                         </div>
             
-                        <i style="margin-top: 2rem; font-size: 2rem" class = "status-msg"> Tap The Mic To Record </i>
+                        <p style="margin-top: 2rem; font-size: 1.4rem" class = "status-msg"> Tap The Mic To Record </p>
         
                         <div style="margin-top: 2rem;"
                             class="player">
