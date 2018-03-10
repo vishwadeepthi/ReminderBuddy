@@ -9,6 +9,12 @@ var sequelize = require("./db/index");
 var index = require('./routes/index');
 var setup = require('./routes/setup');
 var login = require("./routes/login");
+
+/** Used for Authentication */
+var session = require('express-session');
+var passport = require("passport");
+var LocalStrategy = require('passport-local').Strategy;
+
 var app = express();
 
 var {Calls, Contacts} = require("./db/models");
@@ -45,6 +51,47 @@ app.use("/say.xml", function (req, res) {
   
 });
 
+/****Authentication Setup */
+
+app.use(session({
+	secret : 'myturtle',
+	resave: true,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+passport.serializeUser(function(user, done) {
+	console.log(arguments);
+	done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
+/*
+*The below strategy is used to define the login layer  
+*We are using LocalStrategy because, we have 
+*/
+passport.use(new LocalStrategy({
+   usernameField: 'username',
+   passwordField : 'password'
+}, function(username, password, done) {
+	if(username === "hackerearth" && password === "12345") {
+		console.info('we are ok here');
+		done(null, username);
+	}
+	else {
+		done(null, false);
+	}
+}));
+
+/*** Authentication Setup Ends here */
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -55,10 +102,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/', index);
+app.get("/", requireAuth, function() {
+  res.redirect("/index");
+});
+app.use('/index', requireAuth, index);
 app.use('/login', login);
-app.use('/setup', setup);
+app.post('/login', passport.authenticate('local', 
+          { successRedirect: '/index',failureRedirect: '/login' }));
+app.use('/setup', requireAuth, setup);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -78,4 +129,14 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+function requireAuth(req, res, next){
+  // check if the user is logged in
+  console.log()
+  if(!req.isAuthenticated()){
+    req.session.messages = "You need to login to view this page";
+    return res.redirect('/login');
+  }
+
+  next();
+}
 module.exports = app;

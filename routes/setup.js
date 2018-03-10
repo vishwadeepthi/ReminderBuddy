@@ -4,10 +4,10 @@ var { Calls, Contacts } = require("../db/models/index");
 var fs = require("fs");
 var path = require("path");
 let multer = require("multer");
-
-const aS = "";
-const aT = "";
+const aS = "AC59293b902cf238edfd59fc752b3b7054";
+const aT = "b892ca60f2b15dfadc23f778916b5208";
 const client = require("twilio")(aS || process.env.aS, aT || process.env.aT);
+
 
 var storage = multer.diskStorage({
 	filename: function(req, file, callback) {
