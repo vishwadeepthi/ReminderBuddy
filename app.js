@@ -102,7 +102,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get("/", requireAuth, function() {
+app.get("/", requireAuth, function(req, res) {
   res.redirect("/index");
 });
 app.use('/index', requireAuth, index);
