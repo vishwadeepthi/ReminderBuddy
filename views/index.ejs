@@ -86,13 +86,17 @@
                     
                   </td>
                   <td>
-                      <a id="<%- callsList[i].id %>" onclick="play(this)" class="music popup icon item" data-content="Play Music">
-                          <i class="play icon large"></i>
-                          <audio data-id="<%-callsList[i].id %>" src="/recordings/<%-callsList[i].audio %>" > </audio>
-                        </a>
-                        <a  id="<%- callsList[i].id %>" class="music popup icon item delete_call" data-content="Play Music">
-                          <i class="trash icon large"></i>
-                        </a>
+                      <div style = "display: flex;flex-direction: row;justify-content: space-between;">
+
+                          <a id="<%- callsList[i].id %>" onclick="play(this)" class="music popup icon item" data-content="Play Music">
+                              <i class="play icon large"></i>
+                              <audio data-id="<%-callsList[i].id %>" src="/recordings/<%-callsList[i].audio %>" > </audio>
+                            </a>
+                            <a  id="<%- callsList[i].id %>" class="music popup icon item delete_call" data-content="Play Music">
+                              <i class="trash icon large"></i>
+                            </a>
+
+                      </div>
                   </td>
             </tr>       
   

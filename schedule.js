@@ -24,7 +24,7 @@ setInterval(() => {
 				[Op.or]: [false, null]
 			},
 			on: {
-				[Op.lt]: d1
+				[Op.between]: [d2, d1]
 			}
 		}
 	}).then(function(result) {
