@@ -111,7 +111,7 @@
   $(".delete_call").click(function(evt){
     var id = $(this).attr("id"), self =this;
     $.ajax({
-      url: "/delete_call",
+      url: "/index/delete_call",
         type: "POST",
         data: JSON.stringify({
           id: id

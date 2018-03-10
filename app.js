@@ -105,7 +105,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get("/", requireAuth, function(req, res) {
   res.redirect("/index");
 });
-app.use('/index', requireAuth, index);
+app.use('/index', index);
 app.use('/login', login);
 app.post('/login', passport.authenticate('local', 
           { successRedirect: '/index',failureRedirect: '/login' }));
