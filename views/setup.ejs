@@ -42,10 +42,10 @@
                     </a>
                 </div>
                 <% var _call = JSON.parse(call); %>
-                <%  if(_call) { %>
+                <%  if(_call.audio) { %>
                     <div class="item">
                             <div class="ui action input">
-                                <input type="text" class = "call-title" value="<%= _call.title || 'Morning Reminder' %>" maxlength="50">
+                                <input type="text" class = "call-title" value="<%= _call.title   || 'Morning Reminder' %>" maxlength="50">
                                 <button class="ui pink right labeled icon button save-title">
                                     <i class="save icon"></i>
                                     Save
