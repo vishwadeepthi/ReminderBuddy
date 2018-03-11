@@ -67,7 +67,7 @@ function makeCall(callid,tNumber) {
 	client.calls.create(
 		{
 			url: "https://reminderbuddy.herokuapp.com/say.xml?callid=" + callid,
-			to: "+91" + tNumber,
+			to: tNumber.startsWith("+") ? tNumber : ("+91" + tNumber),
 			from: "+15153053983"
 		},
 		(err, call) => {
